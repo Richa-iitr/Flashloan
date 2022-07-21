@@ -31,9 +31,8 @@ interface IFlashLoanProvider {
     function executeFlashLoan(address callback, uint amount, address _token, bytes memory data) external;
 }
 
-//This is the contract which is to be implemented by the flashloan user.
 contract FlashLoanUser is IFlashLoanUser { 
-
+    event LogExecuteOperation(uint256 amt, address token, address provider);
     IFlashLoanProvider private provider; 
 
     /**
@@ -52,16 +51,19 @@ contract FlashLoanUser is IFlashLoanUser {
     }
 
     /**
-     *@dev this mehtod is called by the flashloan provider once the assets are successfully tramsferred to the user.
+     *@dev this mehtod is called by the flashloan provider once the assets are successfully transferred to the user.
      * This will contain the code for arbitrage or any other operation we need to do with the flashloan.
-     * Once the operation is done, it will repay the loan amount back to the provider.
+     * Once the operation is done, it will repay the loan amount along with fees back to the provider.
      */
     function flashLoanCallback(uint amount, address _token, bytes memory data) external override {
         require(msg.sender == address(provider), 'only flash loan provider can execute callback.');
         
         // perform arbitrage, liquidation etc in this function.
-
+        emit LogExecuteOperation(amount, _token, msg.sender);
+        // repay. 
         IERC20(_token).transfer(address(provider), amount);
+
+        // take profit to user EOA.
     }
 
 }

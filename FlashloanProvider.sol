@@ -5,7 +5,6 @@ interface IFlashLoanProvider {
     function executeFlashLoan(address callback, uint amount, address _token, bytes memory data) external;
 }
 
-// ------------------OPENZEPPELIN CONTRACTS---------------------------------------------
 /**
  * @dev Contract module that helps prevent reentrant calls to a function.
  *
@@ -71,6 +70,219 @@ abstract contract ReentrancyGuard {
     }
 }
 
+library SafeMath {
+    /**
+     * @dev Returns the addition of two unsigned integers, with an overflow flag.
+     *
+     * _Available since v3.4._
+     */
+    function tryAdd(uint256 a, uint256 b) internal pure returns (bool, uint256) {
+        unchecked {
+            uint256 c = a + b;
+            if (c < a) return (false, 0);
+            return (true, c);
+        }
+    }
+
+    /**
+     * @dev Returns the subtraction of two unsigned integers, with an overflow flag.
+     *
+     * _Available since v3.4._
+     */
+    function trySub(uint256 a, uint256 b) internal pure returns (bool, uint256) {
+        unchecked {
+            if (b > a) return (false, 0);
+            return (true, a - b);
+        }
+    }
+
+    /**
+     * @dev Returns the multiplication of two unsigned integers, with an overflow flag.
+     *
+     * _Available since v3.4._
+     */
+    function tryMul(uint256 a, uint256 b) internal pure returns (bool, uint256) {
+        unchecked {
+            // Gas optimization: this is cheaper than requiring 'a' not being zero, but the
+            // benefit is lost if 'b' is also tested.
+            // See: https://github.com/OpenZeppelin/openzeppelin-contracts/pull/522
+            if (a == 0) return (true, 0);
+            uint256 c = a * b;
+            if (c / a != b) return (false, 0);
+            return (true, c);
+        }
+    }
+
+    /**
+     * @dev Returns the division of two unsigned integers, with a division by zero flag.
+     *
+     * _Available since v3.4._
+     */
+    function tryDiv(uint256 a, uint256 b) internal pure returns (bool, uint256) {
+        unchecked {
+            if (b == 0) return (false, 0);
+            return (true, a / b);
+        }
+    }
+
+    /**
+     * @dev Returns the remainder of dividing two unsigned integers, with a division by zero flag.
+     *
+     * _Available since v3.4._
+     */
+    function tryMod(uint256 a, uint256 b) internal pure returns (bool, uint256) {
+        unchecked {
+            if (b == 0) return (false, 0);
+            return (true, a % b);
+        }
+    }
+
+    /**
+     * @dev Returns the addition of two unsigned integers, reverting on
+     * overflow.
+     *
+     * Counterpart to Solidity's `+` operator.
+     *
+     * Requirements:
+     *
+     * - Addition cannot overflow.
+     */
+    function add(uint256 a, uint256 b) internal pure returns (uint256) {
+        return a + b;
+    }
+
+    /**
+     * @dev Returns the subtraction of two unsigned integers, reverting on
+     * overflow (when the result is negative).
+     *
+     * Counterpart to Solidity's `-` operator.
+     *
+     * Requirements:
+     *
+     * - Subtraction cannot overflow.
+     */
+    function sub(uint256 a, uint256 b) internal pure returns (uint256) {
+        return a - b;
+    }
+
+    /**
+     * @dev Returns the multiplication of two unsigned integers, reverting on
+     * overflow.
+     *
+     * Counterpart to Solidity's `*` operator.
+     *
+     * Requirements:
+     *
+     * - Multiplication cannot overflow.
+     */
+    function mul(uint256 a, uint256 b) internal pure returns (uint256) {
+        return a * b;
+    }
+
+    /**
+     * @dev Returns the integer division of two unsigned integers, reverting on
+     * division by zero. The result is rounded towards zero.
+     *
+     * Counterpart to Solidity's `/` operator.
+     *
+     * Requirements:
+     *
+     * - The divisor cannot be zero.
+     */
+    function div(uint256 a, uint256 b) internal pure returns (uint256) {
+        return a / b;
+    }
+
+    /**
+     * @dev Returns the remainder of dividing two unsigned integers. (unsigned integer modulo),
+     * reverting when dividing by zero.
+     *
+     * Counterpart to Solidity's `%` operator. This function uses a `revert`
+     * opcode (which leaves remaining gas untouched) while Solidity uses an
+     * invalid opcode to revert (consuming all remaining gas).
+     *
+     * Requirements:
+     *
+     * - The divisor cannot be zero.
+     */
+    function mod(uint256 a, uint256 b) internal pure returns (uint256) {
+        return a % b;
+    }
+
+    /**
+     * @dev Returns the subtraction of two unsigned integers, reverting with custom message on
+     * overflow (when the result is negative).
+     *
+     * CAUTION: This function is deprecated because it requires allocating memory for the error
+     * message unnecessarily. For custom revert reasons use {trySub}.
+     *
+     * Counterpart to Solidity's `-` operator.
+     *
+     * Requirements:
+     *
+     * - Subtraction cannot overflow.
+     */
+    function sub(
+        uint256 a,
+        uint256 b,
+        string memory errorMessage
+    ) internal pure returns (uint256) {
+        unchecked {
+            require(b <= a, errorMessage);
+            return a - b;
+        }
+    }
+
+    /**
+     * @dev Returns the integer division of two unsigned integers, reverting with custom message on
+     * division by zero. The result is rounded towards zero.
+     *
+     * Counterpart to Solidity's `/` operator. Note: this function uses a
+     * `revert` opcode (which leaves remaining gas untouched) while Solidity
+     * uses an invalid opcode to revert (consuming all remaining gas).
+     *
+     * Requirements:
+     *
+     * - The divisor cannot be zero.
+     */
+    function div(
+        uint256 a,
+        uint256 b,
+        string memory errorMessage
+    ) internal pure returns (uint256) {
+        unchecked {
+            require(b > 0, errorMessage);
+            return a / b;
+        }
+    }
+
+    /**
+     * @dev Returns the remainder of dividing two unsigned integers. (unsigned integer modulo),
+     * reverting with custom message when dividing by zero.
+     *
+     * CAUTION: This function is deprecated because it requires allocating memory for the error
+     * message unnecessarily. For custom revert reasons use {tryMod}.
+     *
+     * Counterpart to Solidity's `%` operator. This function uses a `revert`
+     * opcode (which leaves remaining gas untouched) while Solidity uses an
+     * invalid opcode to revert (consuming all remaining gas).
+     *
+     * Requirements:
+     *
+     * - The divisor cannot be zero.
+     */
+    function mod(
+        uint256 a,
+        uint256 b,
+        string memory errorMessage
+    ) internal pure returns (uint256) {
+        unchecked {
+            require(b > 0, errorMessage);
+            return a % b;
+        }
+    }
+}
+
 interface IERC20 {
     event Transfer(address indexed from, address indexed to, uint256 value);
 
@@ -93,33 +305,39 @@ interface IERC20 {
     ) external returns (bool);
 }
 
+
+
 //Every user who wishes to get a flashloan needs to implement 'FlashLoanUser' contract at their end. 
 interface IFlashLoanUser { 
     function flashLoanCallback(uint amount, address token, bytes memory data) external;
 }
 
+
 //Provider of the flashloans
 contract FlashLoanProvider is IFlashLoanProvider, ReentrancyGuard {
+    using SafeMath for uint256;
     mapping(address=>IERC20) public tokens;
 
-    //the constructor takes the token addresses of the contract at the time of deployment, these tokens will be registered with the flashloan provider and the user can ask for flashloan for those tokens.
     constructor(address[] memory _tokens) {
         for(uint i = 0; i < _tokens.length; i++) {
             tokens[_tokens[i]] = IERC20(_tokens[i]);
         }
     }
 
-    /** 
+     /** 
      *@dev This is the function to deposit some assets in our contract so that the flashloan can be provided to the user. 
      * Flashloan user doesn't have to call this or do anything related to depositing assets using this.
-     * Approve flashloan provider with the amount of tokens first, then deposit.
+     * Approve flashloan provider with the amount of tokens first, then deposit. Sample script file for approval: approve_script.js
      */
-    function depositTokens(address[] memory tokens, uint256[] memory amounts) external {
-        uint256 length = tokens.length;
+    function depositTokens(address[] memory _tokens, uint256[] memory amounts) external {
+        uint256 length = _tokens.length;
         require(length == amounts.length, "invalid length");
 
+        for(uint256 i=0;i<length;i++){
+            require(address(tokens[_tokens[i]]) != address(0), "token-not-supported");
+        }
         for(uint256 i = 0; i<length; i++){
-            IERC20(tokens[i]).transferFrom(msg.sender, address(this), amounts[i]);
+            IERC20(_tokens[i]).transferFrom(msg.sender, address(this), amounts[i]);
         }
     }
 
@@ -143,14 +361,17 @@ contract FlashLoanProvider is IFlashLoanProvider, ReentrancyGuard {
         require(address(token) != address(0), "token not supported.");
         require(originalBalance >= amount, "flash loan balance is not sufficient.");
         token.transfer(callback, amount);
-        IFlashLoanUser(callback).flashLoanCallback(amount, _token, data);
-        //fee set to 0% as of now
-        require(token.balanceOf(address(this)) == originalBalance, "flash loan was not repaid.");
+
+        uint256 fees = (amount.mul(5)).div(10000);
+        uint256 amountWithFees = amount.add(fees);
+        IFlashLoanUser(callback).flashLoanCallback(amountWithFees, _token, data);
+        //fee set to 0.05% as of now
+        require(token.balanceOf(address(this)) == (originalBalance.add(fees)), "flash loan was not repaid.");
 
     }
 
     // to receive UZHETH
     receive() external payable {
-        
+
     }
 }
